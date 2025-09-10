@@ -1,19 +1,20 @@
-document.getElementById('predictor-form').addEventListener('submit', function (e) {
-    e.preventDefault();
+document.getElementById('prediction-form').addEventListener('submit', function(event) {
+    event.preventDefault();
 
     const attendance = parseFloat(document.getElementById('attendance').value);
-    const study_hours = parseFloat(document.getElementById('study_hours').value);
-    const assignments = parseFloat(document.getElementById('assignments').value);
+    const studyHours = parseFloat(document.getElementById('study-hours').value);
+    const assignmentScore = parseFloat(document.getElementById('assignment-score').value);
 
-    if (isNaN(attendance) || isNaN(study_hours) || isNaN(assignments)) {
-        document.getElementById('result').innerText = 'Please fill in valid numbers for all fields.';
-        return;
-    }
+    const predictedGrade = calculateGrade(attendance, studyHours, assignmentScore);
 
-    // Improved linear formula with reasonable weights
-    const grade = (0.25 * attendance) + (2.5 * study_hours) + (0.5 * assignments);
-
-    const finalGrade = Math.min(grade, 100).toFixed(2);
-
-    document.getElementById('result').innerText = Predicted Final Grade: ${finalGrade}%;
+    document.getElementById('grade').textContent = predictedGrade;
+    document.getElementById('prediction-result').classList.remove('hidden');
 });
+
+function calculateGrade(attendance, studyHours, assignmentScore) {
+    const weightedScore = (attendance * 0.3) + (studyHours * 0.4) + (assignmentScore * 0.3);
+    if (weightedScore >= 85) return 'A';
+    if (weightedScore >= 70) return 'B';
+    if (weightedScore >= 50) return 'C';
+    return 'D';
+}
