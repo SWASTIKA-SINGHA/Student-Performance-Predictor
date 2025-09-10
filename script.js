@@ -5,8 +5,13 @@ document.getElementById('predictor-form').addEventListener('submit', function (e
     const study_hours = parseFloat(document.getElementById('study_hours').value);
     const assignments = parseFloat(document.getElementById('assignments').value);
 
-    // Example simple linear regression model (coefficients can be improved after real model training)
-    const grade = (0.3 * attendance) + (2 * study_hours) + (0.5 * assignments);
+    if (isNaN(attendance) || isNaN(study_hours) || isNaN(assignments)) {
+        document.getElementById('result').innerText = 'Please fill in valid numbers for all fields.';
+        return;
+    }
+
+    // Improved linear formula with reasonable weights
+    const grade = (0.25 * attendance) + (2.5 * study_hours) + (0.5 * assignments);
 
     const finalGrade = Math.min(grade, 100).toFixed(2);
 
